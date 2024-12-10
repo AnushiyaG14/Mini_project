@@ -33,13 +33,13 @@ def run_query(query):
 
 queries=[
 #Query1
-"select c.sub_category as product,sum(p.sales_price * p.quantity) as Top_10_Revenue from order_ret1 as c, order_ret2 as p group by c.sub_category order by Top_10_Revenue DESC limit 10;",
+"select c.sub_category as product,sum(p.sales_price * p.quantity) as Top_10_Revenue from order_ret1 as c join order_ret2 as p on c.order_id = p.id group by c.sub_category order by Top_10_Revenue DESC limit 10;",
 #Query2
-"select c.city, case when sum(p.sales_price - p.cost_price) = 0 then 0 else (sum((p.sales_price - p.cost_price)* p.quantity)/ sum(p.sales_price*p.quantity)) * 100 end as profit_margin from order_ret1 as c, order_ret2 as p group by c.city order by profit_margin desc limit 5;",
+"select c.city, avg(case when sales_price = 0 then 0 else ((p.profit/p.sales_price)* 100) end) as profit_margin from order_ret1 as c, order_ret2 as p group by c.city order by profit_margin desc limit 5;",
 #Query3
  "select c.category, sum(p.discount) as total_discount from order_ret1 as c, order_ret2 as p group by c.category;",
 #Query4
- "select c.category,(sum(p.sales_price * p.quantity)/sum(p.quantity))as Average_salesprice from order_ret2 as p, order_ret1 as c group by c.category;",
+ "select c.category, avg(p.sales_price) as avg_sales_price from order_ret1 as c join order_ret2 as p on c.order_id=p.id group by c.category;",
 #Query5
 "select c.region,(sum(p.sales_price * p.quantity)/sum(p.quantity))as highest_average_salesprice from order_ret2 as p, order_ret1 as c group by c.region order by highest_average_Salesprice desc limit 1;",
 #Query 6
@@ -47,9 +47,9 @@ queries=[
 #Query 7
  "select c.segment, sum(p.quantity) as highest_quantity from order_ret2 as p, order_ret1 as c group by c.segment order by highest_quantity desc limit 3;",
 #Query 8
-"select c.region,round(avg(p.discount_percent),2) as avg_discount_percentage from order_ret2 as p, order_ret1 as c group by c.region;",
+"select c.region,avg(p.discount_percent) as avg_discount_percentage from order_ret1 as c join order_ret2 as p on c.order_id=p.id group by c.region;",
 #Query 9
-"select c.category,sum((p.sales_price - p.cost_price)*p.quantity) as total_profit from order_ret2 as p, order_ret1 as c group by c.category order by total_profit desc;",
+" select c.category,sum(p.profit) as total_profit from order_ret2 as p, order_ret1 as c group by c.category order by total_profit desc;",
 #Query10
  "select extract(Year from c.order_date) as Year, sum((p.sales_price)*p.quantity) as TotalRevenue from order_ret2 as p, order_ret1 as c group by  extract(Year from c.order_date) order by Year;",
 #Query11 Join to Fetch Complete Order Details*******/
