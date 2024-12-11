@@ -35,7 +35,7 @@ queries=[
 #Query1
 "select c.sub_category as product,sum(p.sales_price * p.quantity) as Top_10_Revenue from order_ret1 as c join order_ret2 as p on c.order_id = p.id group by c.sub_category order by Top_10_Revenue DESC limit 10;",
 #Query2
-"select c.city, avg(case when sales_price = 0 then 0 else ((p.profit/p.sales_price)* 100) end) as profit_margin from order_ret1 as c, order_ret2 as p group by c.city order by profit_margin desc limit 5;",
+"select c.city, avg(case when sales_price = 0 then 0 else ((p.profit/p.sales_price)* 100) end) as profit_margin from order_ret1 as c join order_ret2 as p on c.order_id=p.id group by c.city order by profit_margin desc limit 5;"
 #Query3
  "select c.category, sum(p.discount) as total_discount from order_ret1 as c, order_ret2 as p group by c.category;",
 #Query4
