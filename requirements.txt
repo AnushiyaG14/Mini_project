@@ -1,1 +1,2 @@
 streamlit
+pg8000
