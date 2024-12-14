@@ -1,2 +1,3 @@
 streamlit
 pg8000
+pandas
