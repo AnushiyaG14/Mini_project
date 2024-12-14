@@ -98,6 +98,7 @@ queries=[
 ]
 
 st.title("PostgreSQL Query Result!",)
+st.subheader("1 to 10 GUVI queries, 11 to 20 my query")
 st.sidebar.title("Select your Query here !")
 
 query_description = st.sidebar.selectbox("Choose a query to run:", ques)
