@@ -2,12 +2,12 @@
 # streamlit_app.py
 
 import streamlit as st
-import psycopg2
+import pg8000
 import pandas as pd
 
 # Function to connect to the PostgreSQL databas
 def get_db_connection():
-    conn = psycopg2.connect(
+    conn = pg8000.connect(
        host="dsanudb.cl44kq2oiq5z.ap-south-1.rds.amazonaws.com",
         port=5432,
         database="Mini_project",
