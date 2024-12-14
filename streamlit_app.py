@@ -55,6 +55,9 @@ my_queries = [
     "19. # Identify Orders with No Profit (Profit = 0)",
     "20. # Most Frequently Ordered Product Category"
 ]
+Data_Insights=["Top-Selling Products","year-over-year Analysis",
+               "Product Performance","Regional Sales Analysis","Discount Analysis"]
+
 guvi_queries = [
     "SELECT 'Welcome' AS Message;",
     "select c.sub_category as product,sum(p.sales_price * p.quantity) as Top_10_Revenue from order_ret1 as c join order_ret2 as p on c.order_id = p.id group by c.sub_category order by Top_10_Revenue DESC limit 10;",
@@ -80,20 +83,32 @@ my_queries_list = [
     "select c.order_id,(p.sales_price - p.cost_price)*quantity as profit from order_ret2 as p join order_ret1 as c on c.order_id=p.id where  (p.sales_price - p.cost_price)*quantity=0;",
     "SELECT c.category, count(p.id) AS OrderCount FROM order_ret1 as c JOIN order_ret2 as p ON c.order_id = p.id GROUP BY c.category ORDER BY OrderCount DESC LIMIT 1;"
 ]
+Data_Insights_queries = [ 
+     "select p.order_id,p.sub_category,sum(o.sales_price),rank() over(order by sum(o.sales_price) desc) as rank from order_ret1 as p join order_ret2 as o on p.order_id=o.id group by p.order_id;",
+    " Select extract(Year from c.order_date) as Year, extract(Month from c.order_date) as Month, SUM(p.sales_price) AS total_sales FROM  order_ret1 as c join order_ret2  as p on c.order_id=p.id group by extract(Year from c.order_date),extract(Month from c.order_date) order by Year, Month ;",
+    "SELECT c.order_id, SUM(p.sales_price) AS total_revenue, SUM(profit) AS total_profit, CASE WHEN SUM(p.profit)/NULLIF(SUM(p.sales_price), 0) > 0.2 THEN 'High Margin' ELSE 'Low Margin' END AS profit_category, ROW_NUMBER() OVER(ORDER BY SUM(p.sales_price) DESC) AS rank FROM order_ret1 as c join order_ret2 as p on c.order_id=p.id GROUP BY c.order_id HAVING SUM(p.sales_price) > 0 ORDER BY total_revenue DESC limit 10;",
+    " SELECT c.region, SUM(p.sales_price) AS total_sales FROM order_ret1 as c join order_ret2 as p on c.order_id=p.id GROUP BY c.region ORDER BY total_sales DESC;",
+    " select c.sub_category as product from order_ret1 as c join order_ret2 as p on c.order_id=p.id group by c.sub_category order by avg(p.discount_percent)>20 desc limit 10;"
+    ]
 
 st.title("PostgreSQL Query Results!")
 st.subheader("Explore GUVI Questions and My Queries")
 st.sidebar.title("Query Selector")
-category = st.sidebar.radio("Select Query Category:", ["GUVI Questions", "My Queries"])
+category = st.sidebar.radio("Select Query Category:", ["GUVI Questions", "My Queries","Data Insights"])
 
 if category == "GUVI Questions":
     query_description = st.sidebar.selectbox("Choose a query:", guvi_questions)
     query_index = guvi_questions.index(query_description)
     selected_query = guvi_queries[query_index]
-else:
+elif category == "My Queries":
     query_description = st.sidebar.selectbox("Choose a query:", my_queries)
     query_index = my_queries.index(query_description)
     selected_query = my_queries_list[query_index]
+elif category == "Data Insights":
+    query_description = st.sidebar.selectbox("Choose a query:", Data_Insights)
+    query_index = Data_Insights.index(query_description)
+    selected_query = Data_Insights_queries[query_index]
+
 
 if query_description == "Home":
     st.header("Welcome!")
