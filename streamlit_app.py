@@ -2,6 +2,8 @@
 import streamlit as st
 import pg8000
 import pandas as pd
+
+
 # Function to connect to the PostgreSQL databas
 def get_db_connection():
     conn = pg8000.connect(
@@ -131,6 +133,7 @@ if page == "Home":
 elif page == "Top Selling Products":
     st.title("Top Selling Products")
     st.image("/workspaces/Mini_project/image/Capture1.PNG","Caption = Top 10 Revenue generating products")
+    
 elif page == "Year over Year sales Analysis":
     st.title("Year over Year sales Analysis")
     st.image("/workspaces/Mini_project/image/capture2.png", "Caption = Yearly Sales Analysis")
